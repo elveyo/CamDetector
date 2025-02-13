@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: left;
+            color: #333;
+        }
+
+        .gallery {
+            display: flex;
+            flex-direction:row;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .image-container {
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin:1%;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width:29%;
+
+        }
+
+        .image-container img {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>Images</h1>
+
+<div id="gallery" class="gallery"></div>
+<p id="error" class="error"></p>
+
+<script type="module">
+
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBixzvCbkF8GQUcxd7CGhjjiiBZukParN4",
+        authDomain: "iotfacerecognition-7bc7c.firebaseapp.com",
+        databaseURL: "https://iotfacerecognition-7bc7c-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "iotfacerecognition-7bc7c",
+        storageBucket: "iotfacerecognition-7bc7c.firebasestorage.app",
+        messagingSenderId: "549390927859",
+        appId: "1:549390927859:web:5b490a335a5bd14aae7486"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // Inicijalizacija Firebase Realtime Database
+    const database = getDatabase(app);
+
+    // Primer slušanja promjena u bazi podataka
+    const dbRef = ref(database, "isPhotoTaken"); // Zameni sa stvarnim putem
+
+    // Praćenje promjena na određenoj lokaciji
+    onValue(dbRef, (snapshot) => {
+        const data = snapshot.val(); // Dohvati podatke
+        console.log("Vrijednost atributa je: ", data);
+        if(data === 1){
+            console.log(data)
+             fetchImages();
+        }
+
+    });
+  
+    async function fetchImages() {
+        const gallery = document.getElementById('gallery');
+        const error = document.getElementById('error');
+        gallery.innerHTML = '';
+        try {
+            const response = await fetch('https://iotimages-f9fegmephhc5c8e7.canadacentral-01.azurewebsites.net/Images'); // API endpoint
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch images.');
+            }
+
+            const images = await response.json(); // Assuming server returns array of image URLs
+
+            if (!Array.isArray(images) || images.length === 0) {
+                error.textContent = 'No images found.';
+                return;
+            }
+            error.textContent = '';
+
+            images.forEach(imageUrl => {
+                console.log(imageUrl);
+                const container = document.createElement('div');
+                container.className = 'image-container';
+
+                const img = document.createElement('img');
+                img.src = `data:image/bmp;base64,${imageUrl.data}`;
+                img.alt = 'Uploaded image';
+
+                const dateElement = document.createElement('p');
+                dateElement.textContent = `Created at: ${new Date(imageUrl.createdAt).toLocaleString()}`;
+                container.appendChild(img);
+                container.appendChild(dateElement);
+                gallery.appendChild(container);
+            });
+        } catch (err) {
+            error.textContent = 'No images found.';
+        }
+    }
+
+    fetchImages();
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+[
+  {
+    "ContainingType": "IoTPhotoTakerBackend.Controllers.ImagesController",
+    "Method": "UploadImage",
+    "RelativePath": "Images",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "IoTPhotoTakerBackend.Controllers.ImagesController",
+    "Method": "GetImages",
+    "RelativePath": "Images",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

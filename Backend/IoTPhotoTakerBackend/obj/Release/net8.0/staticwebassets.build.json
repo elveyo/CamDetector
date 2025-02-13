@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "cHsPDzvvLcDFLR1oBxp9nxn/SZNqIJ8dNiIy2jGW63g=",
+  "Source": "IoTPhotoTakerBackend",
+  "BasePath": "_content/IoTPhotoTakerBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

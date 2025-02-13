@@ -1,0 +1,6 @@
+@IoTPhotoTakerBackend_HostAddress = http://localhost:5051
+
+GET {{IoTPhotoTakerBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
